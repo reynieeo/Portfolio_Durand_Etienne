@@ -1,0 +1,1214 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Étienne Durand — Génie Mécanique & Productique</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,300&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #0a0c10;
+    --bg2: #0f1218;
+    --surface: #141820;
+    --border: #1e2530;
+    --accent: #e85a2a;
+    --accent2: #f0a060;
+    --text: #e8eaf0;
+    --muted: #7a8090;
+    --white: #ffffff;
+    --radius: 12px;
+    --transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; font-size: 16px; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    line-height: 1.6;
+  }
+
+  /* ── CURSOR ── */
+  .cursor {
+    position: fixed; width: 10px; height: 10px;
+    background: var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s, width 0.3s, height 0.3s, background 0.3s;
+    mix-blend-mode: screen;
+  }
+  .cursor-ring {
+    position: fixed; width: 36px; height: 36px;
+    border: 1.5px solid var(--accent); border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: transform 0.18s ease, width 0.3s, height 0.3s, opacity 0.3s;
+    opacity: 0.6;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    padding: 1.2rem 4vw;
+    display: flex; align-items: center; justify-content: space-between;
+    background: rgba(10,12,16,0.85);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--border);
+    transition: var(--transition);
+  }
+  .nav-logo {
+    font-family: 'Syne', sans-serif;
+    font-weight: 800; font-size: 1.1rem;
+    letter-spacing: 0.05em;
+    color: var(--white);
+    text-decoration: none;
+  }
+  .nav-logo span { color: var(--accent); }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    text-decoration: none; color: var(--muted);
+    font-size: 0.85rem; font-weight: 500;
+    letter-spacing: 0.08em; text-transform: uppercase;
+    transition: var(--transition);
+    position: relative;
+  }
+  .nav-links a::after {
+    content: ''; position: absolute; bottom: -3px; left: 0;
+    width: 0; height: 1px; background: var(--accent);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--text); }
+  .nav-links a:hover::after { width: 100%; }
+
+  .hamburger {
+    display: none; flex-direction: column; gap: 5px;
+    cursor: pointer; background: none; border: none; padding: 4px;
+  }
+  .hamburger span {
+    display: block; width: 24px; height: 2px;
+    background: var(--text); transition: var(--transition);
+    border-radius: 2px;
+  }
+
+  /* ── SECTIONS BASE ── */
+  section { padding: 8rem 4vw; }
+  .section-label {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.7rem; font-weight: 600;
+    letter-spacing: 0.2em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.8rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+  .section-label::after {
+    content: ''; flex: 1; max-width: 60px;
+    height: 1px; background: var(--accent); opacity: 0.5;
+  }
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    font-weight: 800; line-height: 1.1;
+    margin-bottom: 1rem; color: var(--white);
+  }
+  .container { max-width: 1100px; margin: 0 auto; }
+
+  /* ── HERO ── */
+  #hero {
+    min-height: 100vh;
+    display: grid; place-items: center;
+    position: relative; overflow: hidden;
+    padding-top: 5rem;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 80% 50%, rgba(232,90,42,0.12) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 60% at 10% 80%, rgba(240,160,96,0.06) 0%, transparent 60%);
+  }
+  .hero-grid {
+    position: absolute; inset: 0; z-index: 0;
+    background-image:
+      linear-gradient(rgba(30,37,48,0.4) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(30,37,48,0.4) 1px, transparent 1px);
+    background-size: 60px 60px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black 30%, transparent 100%);
+  }
+  .hero-content {
+    position: relative; z-index: 1;
+    text-align: center;
+    max-width: 900px;
+  }
+  .hero-badge {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    background: rgba(232,90,42,0.12);
+    border: 1px solid rgba(232,90,42,0.3);
+    border-radius: 100px;
+    padding: 0.4rem 1rem;
+    font-size: 0.78rem; font-weight: 500;
+    color: var(--accent2); letter-spacing: 0.05em;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero-badge::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--accent); border-radius: 50%;
+    animation: pulse 2s ease infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.5; transform: scale(1.5); }
+  }
+  .hero-name {
+    font-family: 'Syne', sans-serif;
+    font-size: clamp(3rem, 10vw, 7rem);
+    font-weight: 800; line-height: 0.95;
+    color: var(--white);
+    animation: fadeUp 0.9s 0.1s ease both;
+  }
+  .hero-name .accent { color: var(--accent); }
+  .hero-title {
+    font-size: clamp(1rem, 2.5vw, 1.3rem);
+    font-weight: 300; color: var(--muted);
+    margin: 1rem 0 0.5rem;
+    letter-spacing: 0.03em;
+    animation: fadeUp 0.9s 0.2s ease both;
+  }
+  .hero-sub {
+    font-size: 0.95rem; color: var(--muted);
+    max-width: 560px; margin: 0 auto 2.5rem;
+    animation: fadeUp 0.9s 0.3s ease both;
+  }
+  .hero-ctas {
+    display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;
+    animation: fadeUp 0.9s 0.4s ease both;
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    padding: 0.8rem 1.8rem;
+    border-radius: 8px; font-weight: 500; font-size: 0.9rem;
+    cursor: pointer; transition: var(--transition);
+    text-decoration: none; border: none;
+  }
+  .btn-primary {
+    background: var(--accent); color: var(--white);
+  }
+  .btn-primary:hover {
+    background: #d04a1a; transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(232,90,42,0.35);
+  }
+  .btn-outline {
+    background: transparent;
+    border: 1px solid var(--border); color: var(--text);
+  }
+  .btn-outline:hover {
+    border-color: var(--accent); color: var(--accent);
+    transform: translateY(-2px);
+  }
+  .hero-contacts {
+    display: flex; justify-content: center; gap: 2rem; flex-wrap: wrap;
+    margin-top: 3rem;
+    animation: fadeUp 0.9s 0.5s ease both;
+  }
+  .hero-contact-item {
+    display: flex; align-items: center; gap: 0.5rem;
+    font-size: 0.85rem; color: var(--muted);
+  }
+  .hero-contact-item svg { color: var(--accent); flex-shrink: 0; }
+  .scroll-hint {
+    position: absolute; bottom: 2rem; left: 50%; transform: translateX(-50%);
+    display: flex; flex-direction: column; align-items: center;
+    gap: 0.5rem; color: var(--muted); font-size: 0.7rem; letter-spacing: 0.1em;
+    text-transform: uppercase;
+    animation: fadeUp 1s 1s ease both;
+  }
+  .scroll-line {
+    width: 1px; height: 40px; background: linear-gradient(var(--accent), transparent);
+    animation: scrollDown 1.5s ease-in-out infinite;
+  }
+  @keyframes scrollDown {
+    0% { transform: scaleY(0); transform-origin: top; }
+    50% { transform: scaleY(1); transform-origin: top; }
+    51% { transform: scaleY(1); transform-origin: bottom; }
+    100% { transform: scaleY(0); transform-origin: bottom; }
+  }
+
+  /* ── ABOUT ── */
+  #about { background: var(--bg2); }
+  .about-grid {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 5rem; align-items: center;
+  }
+  .about-text p {
+    color: rgba(232,234,240,0.75); line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+  .about-tags {
+    display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem;
+  }
+  .tag {
+    padding: 0.35rem 0.9rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 100px;
+    font-size: 0.78rem; color: var(--muted);
+    transition: var(--transition);
+  }
+  .tag:hover {
+    border-color: var(--accent); color: var(--accent);
+    background: rgba(232,90,42,0.08);
+  }
+  .about-visual {
+    position: relative; display: flex; flex-direction: column; gap: 1rem;
+  }
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: var(--transition);
+    position: relative; overflow: hidden;
+  }
+  .stat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 2px;
+    background: linear-gradient(90deg, var(--accent), transparent);
+    opacity: 0; transition: opacity 0.3s;
+  }
+  .stat-card:hover { border-color: var(--accent); transform: translateX(4px); }
+  .stat-card:hover::before { opacity: 1; }
+  .stat-number {
+    font-family: 'Syne', sans-serif;
+    font-size: 2.2rem; font-weight: 800;
+    color: var(--accent); line-height: 1;
+    margin-bottom: 0.3rem;
+  }
+  .stat-label { font-size: 0.85rem; color: var(--muted); }
+  .assoc-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    transition: var(--transition);
+  }
+  .assoc-card:hover { border-color: rgba(232,90,42,0.4); transform: translateX(4px); }
+  .assoc-card h4 {
+    font-family: 'Syne', sans-serif; font-size: 1rem;
+    font-weight: 700; color: var(--white); margin-bottom: 0.4rem;
+  }
+  .assoc-card p { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── SKILLS ── */
+  #skills {}
+  .skills-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .skill-group {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); padding: 1.8rem;
+    transition: var(--transition);
+  }
+  .skill-group:hover {
+    border-color: rgba(232,90,42,0.3);
+    box-shadow: 0 0 30px rgba(232,90,42,0.05);
+  }
+  .skill-group-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 0.75rem; font-weight: 700;
+    letter-spacing: 0.15em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.5rem;
+  }
+  .skill-item { margin-bottom: 1rem; }
+  .skill-item:last-child { margin-bottom: 0; }
+  .skill-top {
+    display: flex; justify-content: space-between;
+    align-items: center; margin-bottom: 0.4rem;
+  }
+  .skill-name { font-size: 0.88rem; font-weight: 500; color: var(--text); }
+  .skill-pct { font-size: 0.78rem; color: var(--muted); font-family: 'Syne', sans-serif; }
+  .skill-bar {
+    height: 4px; background: var(--border); border-radius: 2px; overflow: hidden;
+  }
+  .skill-fill {
+    height: 100%; border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    width: 0; transition: width 1.2s cubic-bezier(0.4,0,0.2,1);
+  }
+  .lang-grid {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 0.8rem; margin-top: 0.8rem;
+  }
+  .lang-chip {
+    background: var(--bg2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.7rem 1rem;
+    text-align: center;
+  }
+  .lang-chip .lang-name { font-size: 0.85rem; font-weight: 500; color: var(--text); }
+  .lang-chip .lang-level { font-size: 0.72rem; color: var(--muted); margin-top: 0.2rem; }
+
+  /* ── EXPERIENCE ── */
+  #experience { background: var(--bg2); }
+  .timeline { position: relative; margin-top: 3rem; }
+  .timeline::before {
+    content: ''; position: absolute;
+    left: 20px; top: 0; bottom: 0; width: 1px;
+    background: var(--border);
+  }
+  .tl-item {
+    position: relative; padding-left: 60px; margin-bottom: 1.5rem;
+  }
+  .tl-dot {
+    position: absolute; left: 12px; top: 1.6rem;
+    width: 16px; height: 16px;
+    background: var(--bg2);
+    border: 2px solid var(--border);
+    border-radius: 50%;
+    transition: var(--transition);
+    z-index: 1;
+  }
+  .tl-item.active .tl-dot,
+  .tl-item:hover .tl-dot {
+    border-color: var(--accent);
+    box-shadow: 0 0 0 4px rgba(232,90,42,0.15);
+    background: var(--accent);
+  }
+  .tl-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.5rem;
+    cursor: pointer;
+    transition: var(--transition);
+  }
+  .tl-card:hover, .tl-item.active .tl-card {
+    border-color: rgba(232,90,42,0.35);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+  }
+  .tl-header {
+    display: flex; justify-content: space-between;
+    align-items: flex-start; gap: 1rem;
+  }
+  .tl-company {
+    font-size: 0.72rem; font-weight: 600;
+    letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.3rem;
+  }
+  .tl-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.05rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.2rem;
+  }
+  .tl-date {
+    font-size: 0.75rem; color: var(--muted);
+    white-space: nowrap; margin-top: 0.2rem;
+  }
+  .tl-arrow {
+    color: var(--muted); font-size: 0.8rem;
+    transition: transform 0.3s;
+  }
+  .tl-item.active .tl-arrow { transform: rotate(180deg); color: var(--accent); }
+  .tl-body {
+    max-height: 0; overflow: hidden;
+    transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1), padding 0.3s;
+  }
+  .tl-item.active .tl-body { max-height: 400px; }
+  .tl-body-inner { padding-top: 1rem; }
+  .tl-body ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .tl-body ul li {
+    font-size: 0.88rem; color: rgba(232,234,240,0.75);
+    display: flex; gap: 0.7rem; align-items: flex-start;
+  }
+  .tl-body ul li::before {
+    content: '→'; color: var(--accent); flex-shrink: 0; margin-top: 0.02em;
+  }
+
+  /* ── PROJECTS ── */
+  #projects {}
+  .projects-grid {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem; margin-top: 3rem;
+  }
+  .project-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius); overflow: hidden;
+    cursor: pointer; transition: var(--transition);
+    group: true;
+  }
+  .project-card:hover {
+    border-color: rgba(232,90,42,0.4);
+    transform: translateY(-6px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+  }
+  .project-img {
+    height: 180px; position: relative; overflow: hidden;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 4rem;
+  }
+  .project-img-overlay {
+    position: absolute; inset: 0;
+    background: rgba(10,12,16,0.6);
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; transition: opacity 0.3s;
+    font-size: 0.85rem; color: var(--white);
+    font-weight: 500; gap: 0.4rem;
+  }
+  .project-card:hover .project-img-overlay { opacity: 1; }
+  .project-body { padding: 1.4rem; }
+  .project-tag {
+    font-size: 0.68rem; font-weight: 600;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--accent); margin-bottom: 0.5rem;
+  }
+  .project-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 1rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .project-desc { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+  .project-chips { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 1rem; }
+  .project-chip {
+    padding: 0.2rem 0.6rem;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: 4px; font-size: 0.72rem; color: var(--muted);
+  }
+
+  /* Modal */
+  .modal-overlay {
+    position: fixed; inset: 0; z-index: 500;
+    background: rgba(0,0,0,0.8); backdrop-filter: blur(8px);
+    display: flex; align-items: center; justify-content: center;
+    padding: 2rem;
+    opacity: 0; pointer-events: none;
+    transition: opacity 0.3s;
+  }
+  .modal-overlay.open { opacity: 1; pointer-events: all; }
+  .modal {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px; max-width: 600px; width: 100%;
+    padding: 2.5rem; position: relative;
+    transform: scale(0.95) translateY(20px);
+    transition: transform 0.3s, opacity 0.3s;
+    max-height: 80vh; overflow-y: auto;
+  }
+  .modal-overlay.open .modal { transform: scale(1) translateY(0); }
+  .modal-close {
+    position: absolute; top: 1rem; right: 1rem;
+    background: var(--bg); border: 1px solid var(--border);
+    color: var(--muted); border-radius: 8px;
+    width: 36px; height: 36px; font-size: 1rem;
+    cursor: pointer; transition: var(--transition);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .modal-close:hover { border-color: var(--accent); color: var(--accent); }
+  .modal h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.4rem; font-weight: 800;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .modal-subtitle { font-size: 0.85rem; color: var(--accent); margin-bottom: 1.2rem; }
+  .modal p { font-size: 0.9rem; color: rgba(232,234,240,0.75); line-height: 1.7; margin-bottom: 0.8rem; }
+  .modal ul { list-style: none; display: flex; flex-direction: column; gap: 0.5rem; }
+  .modal ul li {
+    font-size: 0.88rem; color: rgba(232,234,240,0.75);
+    display: flex; gap: 0.7rem;
+  }
+  .modal ul li::before { content: '▸'; color: var(--accent); flex-shrink: 0; }
+
+  /* ── CONTACT ── */
+  #contact { background: var(--bg2); }
+  .contact-grid {
+    display: grid; grid-template-columns: 1fr 1.4fr;
+    gap: 4rem; align-items: start; margin-top: 3rem;
+  }
+  .contact-info h3 {
+    font-family: 'Syne', sans-serif;
+    font-size: 1.2rem; font-weight: 700;
+    color: var(--white); margin-bottom: 0.5rem;
+  }
+  .contact-info p { font-size: 0.88rem; color: var(--muted); line-height: 1.7; margin-bottom: 1.5rem; }
+  .contact-links { display: flex; flex-direction: column; gap: 0.8rem; }
+  .contact-link {
+    display: flex; align-items: center; gap: 0.8rem;
+    text-decoration: none; color: var(--text);
+    font-size: 0.88rem; padding: 0.8rem 1rem;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; transition: var(--transition);
+  }
+  .contact-link:hover {
+    border-color: var(--accent); color: var(--accent);
+    transform: translateX(4px);
+  }
+  .contact-link svg { color: var(--accent); flex-shrink: 0; }
+  .form { display: flex; flex-direction: column; gap: 1rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { display: flex; flex-direction: column; gap: 0.4rem; }
+  .form-group label { font-size: 0.78rem; font-weight: 500; color: var(--muted); letter-spacing: 0.05em; text-transform: uppercase; }
+  .form-group input, .form-group textarea {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.8rem 1rem;
+    color: var(--text); font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem; outline: none; transition: border-color 0.2s;
+    resize: none;
+  }
+  .form-group input:focus, .form-group textarea:focus { border-color: var(--accent); }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: var(--muted); }
+  .form-success {
+    display: none;
+    align-items: center; gap: 0.8rem;
+    padding: 1rem; background: rgba(34,197,94,0.1);
+    border: 1px solid rgba(34,197,94,0.3);
+    border-radius: 8px; color: #4ade80;
+    font-size: 0.88rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center; padding: 2.5rem;
+    border-top: 1px solid var(--border);
+    font-size: 0.8rem; color: var(--muted);
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .reveal {
+    opacity: 0; transform: translateY(40px);
+    transition: opacity 0.7s ease, transform 0.7s ease;
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.1s; }
+  .reveal-delay-2 { transition-delay: 0.2s; }
+  .reveal-delay-3 { transition-delay: 0.3s; }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    nav .nav-links { display: none; flex-direction: column; position: absolute; top: 100%; left: 0; right: 0; background: var(--bg); border-bottom: 1px solid var(--border); padding: 1rem 2rem; }
+    nav .nav-links.open { display: flex; }
+    .hamburger { display: flex; }
+    section { padding: 5rem 5vw; }
+    .about-grid { grid-template-columns: 1fr; gap: 3rem; }
+    .contact-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .form-row { grid-template-columns: 1fr; }
+    .cursor, .cursor-ring { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#hero" class="nav-logo">É<span>.</span>DURAND</a>
+  <ul class="nav-links" id="navLinks">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#skills">Compétences</a></li>
+    <li><a href="#experience">Expérience</a></li>
+    <li><a href="#projects">Projets</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-grid"></div>
+  <div class="hero-content">
+    <div class="hero-badge">Disponible pour un stage · Mars – Juin 2026</div>
+    <h1 class="hero-name">Étienne<br><span class="accent">Durand</span></h1>
+    <p class="hero-title">BUT Génie Mécanique & Productique</p>
+    <p class="hero-sub">Étudiant passionné par la conception mécanique et l'innovation industrielle, à la recherche d'un stage de fin d'étude du <strong style="color:var(--text)">16 mars au 21 juin 2026</strong>.</p>
+    <div class="hero-ctas">
+      <a href="#experience" class="btn btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 7H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V9a2 2 0 0 0-2-2z"/><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"/></svg>
+        Mon parcours
+      </a>
+      <a href="#contact" class="btn btn-outline">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        Me contacter
+      </a>
+    </div>
+    <div class="hero-contacts">
+      <span class="hero-contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1 19.79 19.79 0 0 1 1.61 4.48 2 2 0 0 1 3.6 2.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.76-.76a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+        06 11 23 91 18
+      </span>
+      <span class="hero-contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+        durandetienne2005@gmail.com
+      </span>
+      <span class="hero-contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+        Rognes, 13840
+      </span>
+      <span class="hero-contact-item">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+        19 ans · Permis B
+      </span>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-line"></div>
+    scroll
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="about-text reveal">
+        <div class="section-label">À propos</div>
+        <h2 class="section-title">Curieux,<br>impliqué,<br>rigoureux.</h2>
+        <p>Étudiant en 3ème année de BUT Génie Mécanique et Productique à l'Université de Toulon, je me passionne pour la conception industrielle, la CAO et l'innovation mécanique. Mon objectif est de mettre en pratique mes compétences dans un environnement stimulant lors d'un stage de fin d'études.</p>
+        <p>Mon passage chez <strong style="color:var(--white)">Stellantis R&D</strong> m'a permis de travailler sur des projets concrets de conception paramétrique en environnement industriel, renforçant ma capacité à livrer des solutions techniques efficaces sous contraintes réelles.</p>
+        <p>En dehors des études, je m'investis dans l'<strong style="color:var(--white)">Europ'Raid</strong>, un raid automobile traversant 20 pays à vocation humanitaire — une aventure qui forge le sens de l'organisation et l'esprit d'équipe.</p>
+        <div class="about-tags">
+          <span class="tag">🏔️ Escalade</span>
+          <span class="tag">⛷️ Ski</span>
+          <span class="tag">🚲 Vélo & Voile</span>
+          <span class="tag">🌍 Voyages</span>
+          <span class="tag">🤝 Europ'Raid</span>
+          <span class="tag">📐 CAO</span>
+        </div>
+      </div>
+      <div class="about-visual">
+        <div class="stat-card reveal reveal-delay-1">
+          <div class="stat-number">3<span style="font-size:1.2rem;color:var(--muted)">ans</span></div>
+          <div class="stat-label">de formation en Génie Mécanique & Productique</div>
+        </div>
+        <div class="stat-card reveal reveal-delay-2">
+          <div class="stat-number">4<span style="font-size:1.2rem;color:var(--muted)">mois</span></div>
+          <div class="stat-label">d'expérience chez Stellantis en R&D Mécatronique</div>
+        </div>
+        <div class="assoc-card reveal reveal-delay-3">
+          <h4>🏁 Projet Europ'Raid</h4>
+          <p>Organisation, recherche de sponsors et participation au raid automobile humanitaire et culturel traversant 20 pays à travers l'Europe.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="container">
+    <div class="section-label reveal">Compétences</div>
+    <h2 class="section-title reveal">Ce que<br>je maîtrise.</h2>
+    <div class="skills-grid">
+
+      <div class="skill-group reveal reveal-delay-1">
+        <div class="skill-group-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          CAO / Conception
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">CATIA V5R23 / V6</span><span class="skill-pct">90%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="90"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">SolidWorks</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Part & Assembly Design</span><span class="skill-pct">85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Drafting / Mise en plan</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-2">
+        <div class="skill-group-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+          Mécanique & Matériaux
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Mécanique statique / dynamique</span><span class="skill-pct">78%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Sciences des matériaux</span><span class="skill-pct">75%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Traitements thermiques</span><span class="skill-pct">70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Métrologie</span><span class="skill-pct">72%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="72"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-3">
+        <div class="skill-group-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
+          Ingénierie & Fabrication
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Usinage CNC</span><span class="skill-pct">75%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="75"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Usinage conventionnel</span><span class="skill-pct">70%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="70"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Cotation & chaîne de cotes</span><span class="skill-pct">80%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="80"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Étude de mécanismes</span><span class="skill-pct">78%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="78"></div></div>
+        </div>
+      </div>
+
+      <div class="skill-group reveal reveal-delay-1">
+        <div class="skill-group-title">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          Informatique & Langues
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Office 365 (Excel, Word, PPT)</span><span class="skill-pct">85%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="85"></div></div>
+        </div>
+        <div class="skill-item">
+          <div class="skill-top"><span class="skill-name">Électronique (cartes PCB)</span><span class="skill-pct">60%</span></div>
+          <div class="skill-bar"><div class="skill-fill" data-width="60"></div></div>
+        </div>
+        <div style="margin-top:1rem">
+          <div style="font-size:0.75rem;color:var(--muted);margin-bottom:0.5rem;text-transform:uppercase;letter-spacing:0.1em">Langues</div>
+          <div class="lang-grid">
+            <div class="lang-chip">
+              <div class="lang-name">🇬🇧 Anglais</div>
+              <div class="lang-level">Usuel & Technique</div>
+            </div>
+            <div class="lang-chip">
+              <div class="lang-name">🇪🇸 Espagnol</div>
+              <div class="lang-level">Initiation</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="container">
+    <div class="section-label reveal">Expérience</div>
+    <h2 class="section-title reveal">Mon parcours<br>professionnel.</h2>
+    <div class="timeline reveal">
+
+      <div class="tl-item" data-index="0">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleTimeline(0)">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">STELLANTIS · Vélizy-Villacoublay</div>
+              <div class="tl-title">Conception de modèles paramétriques</div>
+              <div class="tl-date">Janv. 2025 — Avr. 2025 · Département R&D, Service Mécatronique</div>
+            </div>
+            <span class="tl-arrow">▾</span>
+          </div>
+          <div class="tl-body">
+            <div class="tl-body-inner">
+              <ul>
+                <li>Conception et amélioration du référentiel technique d'un Module d'Entrée d'Air Piloté destiné à l'automobile.</li>
+                <li>Création de modèles 3D paramétrés sous CATIA V6 permettant de générer rapidement simulations et versions fonctionnelles.</li>
+                <li>Rédaction de guides d'utilisation pour la prise en main des modèles paramétrés par les équipes R&D.</li>
+                <li>Environnement industriel haute exigence avec gestion de contraintes multiples et évolutions de design.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-index="1">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleTimeline(1)">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">MISSIONS DIVERSES · Aix-en-Provence</div>
+              <div class="tl-title">Missions volontaires & intérim</div>
+              <div class="tl-date">Août 2021 — Juil. 2024 · En parallèle des études</div>
+            </div>
+            <span class="tl-arrow">▾</span>
+          </div>
+          <div class="tl-body">
+            <div class="tl-body-inner">
+              <ul>
+                <li>Missions dans l'événementiel (stade de rugby, festivals).</li>
+                <li>Approvisionnement logistique pour des boulangeries.</li>
+                <li>Travail saisonnier en viticulture et vinification.</li>
+                <li>Gestion opérationnelle d'une buvette événementielle.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-index="2">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleTimeline(2)">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">AGROASIS · La Tour d'Aigues</div>
+              <div class="tl-title">Conception de cartes électroniques</div>
+              <div class="tl-date">Décembre 2019 · Stage découverte</div>
+            </div>
+            <span class="tl-arrow">▾</span>
+          </div>
+          <div class="tl-body">
+            <div class="tl-body-inner">
+              <ul>
+                <li>Stage en régulation climatique de serres agricoles intelligentes.</li>
+                <li>Réalisation en autonomie d'une dizaine de cartes électroniques de 95 composants chacune.</li>
+                <li>Pilotage des paramètres de culture : température, irrigation, CO₂, nutriments.</li>
+                <li>Première immersion dans un environnement technique professionnel.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="tl-item" data-index="3">
+        <div class="tl-dot"></div>
+        <div class="tl-card" onclick="toggleTimeline(3)">
+          <div class="tl-header">
+            <div>
+              <div class="tl-company">UNIVERSITÉ DE TOULON · La Garde</div>
+              <div class="tl-title">BUT Génie Mécanique et Productique</div>
+              <div class="tl-date">Depuis sept. 2023 · Formation en cours</div>
+            </div>
+            <span class="tl-arrow">▾</span>
+          </div>
+          <div class="tl-body">
+            <div class="tl-body-inner">
+              <ul>
+                <li>Formation axée sur le cycle de vie complet d'un produit industriel.</li>
+                <li>Conception, industrialisation (procédés de fabrication et d'assemblage).</li>
+                <li>Organisation sur ligne de production et gestion de projet.</li>
+                <li>Préparation au stage de fin d'étude : mars – juin 2026.</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="container">
+    <div class="section-label reveal">Projets</div>
+    <h2 class="section-title reveal">Réalisations<br>notables.</h2>
+    <div class="projects-grid">
+
+      <div class="project-card reveal reveal-delay-1" onclick="openModal('modal-1')">
+        <div class="project-img" style="background: linear-gradient(135deg, #1a2035 0%, #0f1220 100%);">
+          <span>⚙️</span>
+          <div class="project-img-overlay">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Voir le détail
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tag">Stellantis R&D · 2025</div>
+          <div class="project-title">Module d'Entrée d'Air Piloté</div>
+          <div class="project-desc">Conception paramétrique sous CATIA V6 d'un référentiel technique pour véhicule automobile.</div>
+          <div class="project-chips">
+            <span class="project-chip">CATIA V6</span>
+            <span class="project-chip">Paramétrique</span>
+            <span class="project-chip">Automobile</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-2" onclick="openModal('modal-2')">
+        <div class="project-img" style="background: linear-gradient(135deg, #1a2510 0%, #0f1a08 100%);">
+          <span>🌱</span>
+          <div class="project-img-overlay">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Voir le détail
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tag">Agroasis · 2019</div>
+          <div class="project-title">Régulation Climatique de Serres</div>
+          <div class="project-desc">Réalisation de cartes électroniques embarquées pour le pilotage de paramètres de serres intelligentes.</div>
+          <div class="project-chips">
+            <span class="project-chip">Électronique</span>
+            <span class="project-chip">PCB</span>
+            <span class="project-chip">IoT Agricole</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="project-card reveal reveal-delay-3" onclick="openModal('modal-3')">
+        <div class="project-img" style="background: linear-gradient(135deg, #201510 0%, #150a05 100%);">
+          <span>🏁</span>
+          <div class="project-img-overlay">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            Voir le détail
+          </div>
+        </div>
+        <div class="project-body">
+          <div class="project-tag">Associatif · En cours</div>
+          <div class="project-title">Europ'Raid 2026</div>
+          <div class="project-desc">Organisation d'un raid automobile traversant 20 pays à vocation humanitaire et culturelle.</div>
+          <div class="project-chips">
+            <span class="project-chip">Organisation</span>
+            <span class="project-chip">Sponsoring</span>
+            <span class="project-chip">Humanitaire</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="container">
+    <div class="section-label reveal">Contact</div>
+    <h2 class="section-title reveal">Discutons<br>ensemble.</h2>
+    <div class="contact-grid">
+      <div class="contact-info reveal">
+        <h3>Disponible dès le 16 mars 2026</h3>
+        <p>Je suis à la recherche d'un stage de fin d'études du 16 mars au 21 juin 2026. N'hésitez pas à me contacter pour discuter de votre besoin !</p>
+        <div class="contact-links">
+          <a href="tel:+33611239118" class="contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 13.1 19.79 19.79 0 0 1 1.61 4.48 2 2 0 0 1 3.6 2.27h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l.76-.76a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.73 17z"/></svg>
+            06 11 23 91 18
+          </a>
+          <a href="mailto:durandetienne2005@gmail.com" class="contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2-2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            durandetienne2005@gmail.com
+          </a>
+          <a href="https://www.linkedin.com/in/etienne-durand" target="_blank" class="contact-link">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+            LinkedIn
+          </a>
+          <span class="contact-link" style="cursor:default">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            Rognes, Bouches-du-Rhône (13840)
+          </span>
+        </div>
+      </div>
+      <div class="reveal reveal-delay-2">
+        <form class="form" onsubmit="handleSubmit(event)">
+          <div class="form-row">
+            <div class="form-group">
+              <label>Nom</label>
+              <input type="text" placeholder="Votre nom" required>
+            </div>
+            <div class="form-group">
+              <label>Entreprise</label>
+              <input type="text" placeholder="Votre entreprise">
+            </div>
+          </div>
+          <div class="form-group">
+            <label>Email</label>
+            <input type="email" placeholder="votre@email.com" required>
+          </div>
+          <div class="form-group">
+            <label>Message</label>
+            <textarea rows="5" placeholder="Décrivez votre offre de stage ou votre message…" required></textarea>
+          </div>
+          <button type="submit" class="btn btn-primary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Envoyer le message
+          </button>
+          <div class="form-success" id="formSuccess">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+            Message envoyé ! Étienne vous répondra rapidement.
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <p>© 2026 <span>Étienne Durand</span> · BUT Génie Mécanique & Productique · Conçu avec soin</p>
+</footer>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="modal-1" onclick="closeModal(event, 'modal-1')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn('modal-1')">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem">⚙️</div>
+    <h3>Module d'Entrée d'Air Piloté</h3>
+    <div class="modal-subtitle">Stellantis R&D · Mécatronique · Janv.–Avr. 2025</div>
+    <p>Dans le cadre de mon stage de 4 mois au département R&D Mécatronique de Stellantis à Vélizy-Villacoublay, j'ai travaillé sur la conception et l'amélioration du référentiel technique d'un Module d'Entrée d'Air Piloté (MEAP) destiné à l'automobile.</p>
+    <ul>
+      <li>Conception de modèles 3D entièrement paramétrés sous CATIA V6 pour générer rapidement différentes variantes fonctionnelles.</li>
+      <li>Modélisation permettant de simuler différentes contraintes mécaniques et évolutions du design selon les cahiers des charges.</li>
+      <li>Rédaction de guides d'utilisation détaillés pour la prise en main des modèles par l'équipe R&D.</li>
+      <li>Collaboration avec ingénieurs et techniciens dans un environnement industriel haute exigence.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-2" onclick="closeModal(event, 'modal-2')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn('modal-2')">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem">🌱</div>
+    <h3>Régulation Climatique de Serres</h3>
+    <div class="modal-subtitle">Agroasis · La Tour d'Aigues · Décembre 2019</div>
+    <p>Lors de ce stage de découverte chez Agroasis, j'ai eu l'opportunité de travailler en totale autonomie sur la conception de systèmes électroniques embarqués pour des serres agricoles intelligentes.</p>
+    <ul>
+      <li>Réalisation en autonomie d'une dizaine de cartes électroniques de 95 composants chacune.</li>
+      <li>Intégration de capteurs pour le pilotage de paramètres climatiques : température, irrigation, CO₂ et nutriments.</li>
+      <li>Câblage, soudure et test fonctionnel de chaque carte avant déploiement.</li>
+      <li>Première expérience en environnement professionnel, développement de la rigueur et de l'autonomie.</li>
+    </ul>
+  </div>
+</div>
+
+<div class="modal-overlay" id="modal-3" onclick="closeModal(event, 'modal-3')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn('modal-3')">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem">🏁</div>
+    <h3>Europ'Raid 2026</h3>
+    <div class="modal-subtitle">Projet associatif · En cours</div>
+    <p>L'Europ'Raid est un raid automobile à vocation humanitaire et culturelle qui parcourt 20 pays à travers l'Europe. Ce projet associatif est une formidable école de gestion de projet, de travail en équipe et de dépassement de soi.</p>
+    <ul>
+      <li>Organisation logistique du raid sur plusieurs mois de préparation.</li>
+      <li>Recherche et démarchage de sponsors pour financer le projet.</li>
+      <li>Coordination entre les équipes participants et les partenaires humanitaires.</li>
+      <li>Participation active au raid traversant 20 pays avec une dimension culturelle et solidaire forte.</li>
+    </ul>
+  </div>
+</div>
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursorRing');
+  let mx = -100, my = -100, rx = -100, ry = -100;
+  document.addEventListener('mousemove', e => { mx = e.clientX; my = e.clientY; });
+  function animCursor() {
+    cursor.style.left = mx + 'px'; cursor.style.top = my + 'px';
+    rx += (mx - rx) * 0.12; ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px'; ring.style.top = ry + 'px';
+    requestAnimationFrame(animCursor);
+  }
+  animCursor();
+  document.querySelectorAll('a,button,.project-card,.tl-card').forEach(el => {
+    el.addEventListener('mouseenter', () => { cursor.style.transform = 'translate(-50%,-50%) scale(2.5)'; ring.style.opacity = '0.2'; });
+    el.addEventListener('mouseleave', () => { cursor.style.transform = 'translate(-50%,-50%) scale(1)'; ring.style.opacity = '0.6'; });
+  });
+
+  // HAMBURGER
+  document.getElementById('hamburger').addEventListener('click', () => {
+    document.getElementById('navLinks').classList.toggle('open');
+  });
+
+  // TIMELINE
+  function toggleTimeline(idx) {
+    const items = document.querySelectorAll('.tl-item');
+    items.forEach((item, i) => {
+      if (i === idx) item.classList.toggle('active');
+      else item.classList.remove('active');
+    });
+  }
+  // Open first by default
+  document.querySelectorAll('.tl-item')[0].classList.add('active');
+
+  // SCROLL REVEAL
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        // Animate skill bars
+        e.target.querySelectorAll('.skill-fill').forEach(bar => {
+          bar.style.width = bar.dataset.width + '%';
+        });
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  // Also observe skill groups for bar animation
+  document.querySelectorAll('.skill-group').forEach(el => observer.observe(el));
+
+  // MODALS
+  function openModal(id) {
+    document.getElementById(id).classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function closeModal(e, id) {
+    if (e.target === e.currentTarget) {
+      document.getElementById(id).classList.remove('open');
+      document.body.style.overflow = '';
+    }
+  }
+  function closeModalBtn(id) {
+    document.getElementById(id).classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  document.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal-overlay.open').forEach(m => {
+        m.classList.remove('open'); document.body.style.overflow = '';
+      });
+    }
+  });
+
+  // FORM
+  function handleSubmit(e) {
+    e.preventDefault();
+    const btn = e.target.querySelector('button[type=submit]');
+    btn.textContent = 'Envoi…'; btn.disabled = true;
+    setTimeout(() => {
+      document.getElementById('formSuccess').style.display = 'flex';
+      btn.style.display = 'none';
+      e.target.querySelectorAll('input, textarea').forEach(f => f.value = '');
+    }, 1200);
+  }
+
+  // NAV scroll effect
+  window.addEventListener('scroll', () => {
+    const nav = document.getElementById('navbar');
+    nav.style.padding = window.scrollY > 50 ? '0.8rem 4vw' : '1.2rem 4vw';
+  });
+
+  // Init skill bars for already-visible elements
+  setTimeout(() => {
+    document.querySelectorAll('.skill-fill').forEach(bar => {
+      const rect = bar.getBoundingClientRect();
+      if (rect.top < window.innerHeight) bar.style.width = bar.dataset.width + '%';
+    });
+  }, 300);
+</script>
+</body>
+</html>
