@@ -715,10 +715,10 @@
     <h2 class="section-title reveal">Ce que<br>je maîtrise.</h2>
     <div class="skills-grid">
 
-      <div class="skill-group reveal reveal-delay-1">
+      <div class="skill-group reveal reveal-delay-1" onclick="openModal('modal-4')">
         <div class="skill-group-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
-          CAO / Conception
+          Ingénierie de conception mécanique
         </div>
         <div class="skill-item">
           <div class="skill-top"><span class="skill-name">CATIA V5R23 / V6</span><span class="skill-pct">90%</span></div>
@@ -738,10 +738,10 @@
         </div>
       </div>
 
-      <div class="skill-group reveal reveal-delay-2">
+      <div class="skill-group reveal reveal-delay-2" onclick="openModal('modal-5')">
         <div class="skill-group-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
-          Mécanique & Matériaux
+          Production / Méthodes
         </div>
         <div class="skill-item">
           <div class="skill-top"><span class="skill-name">Mécanique statique / dynamique</span><span class="skill-pct">78%</span></div>
@@ -761,10 +761,10 @@
         </div>
       </div>
 
-      <div class="skill-group reveal reveal-delay-3" onclick="openModal('modal-1')">
+      <div class="skill-group reveal reveal-delay-3" onclick="openModal('modal-6')">
         <div class="skill-group-title">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="21" x2="9" y2="9"/></svg>
-          Ingénierie & Fabrication
+          Contrôle / Métrologie
         </div>
         <div class="skill-item">
           <div class="skill-top"><span class="skill-name">Usinage CNC</span><span class="skill-pct">75%</span></div>
@@ -1058,7 +1058,51 @@
     </ul>
   </div>
 </div>
-
+<div class="modal-overlay" id="modal-4" onclick="closeModal(event, 'modal-4')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn('modal-4')">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem"></div>
+    <h3>Ingénierie de conception mécanique</h3>
+    <div class="modal-subtitle">BUT Génie Mécanique & Productique · Compétences académique</div>
+    <p>Capacité à analyser un cahier des charges et à concevoir des systèmes mécaniques répondant à des contraintes techniques et fonctionnelles. Maîtrise des outils de conception assistée par ordinateur pour modéliser des pièces et assemblages, ainsi que des méthodes de dimensionnement permettant de vérifier la résistance et le bon fonctionnement des composants mécaniques.</p>
+    <ul>
+      <li>Conception de pièces et d’assemblages mécaniques</li>
+      <li>Modélisation CAO sous CATIA / SolidWorks</li>
+      <li>Dimensionnement mécanique et RDM</li>
+      <li>Cotation fonctionnelle et tolérancement</li>
+    </ul>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-5" onclick="closeModal(event, 'modal-5')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn('modal-1')">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem"></div>
+    <h3>Conception et fabrication d'un moyeu de vélo</h3>
+    <div class="modal-subtitle">BUT Génie Mécanique & Productique · Projet académique</div>
+    <p>Dans le cadre d’un projet de conception mécanique, j’ai participé au développement complet d’un moyeu arrière de vélo cargo intégrant un système de roue libre. À partir d’un cahier des charges, le projet consistait à dimensionner, concevoir, fabriquer et contrôler l’ensemble du système mécanique.</p>
+    <ul>
+      <li>Dimensionnement du moyeu, choix des roulements et conception du système de roue libre avec calcul des cliquets.</li>
+      <li>Modélisation complète de l’ensemble sous CATIA, incluant la conception détaillée des différentes pièces mécaniques.</li>
+      <li>Préparation de la fabrication avec CFAO et définition des gammes d’usinage, puis usinage des composants.</li>
+      <li>Contrôle dimensionnel et vérification de la conformité des pièces en métrologie.</li>
+    </ul>
+  </div>
+</div>
+<div class="modal-overlay" id="modal-6" onclick="closeModal(event, 'modal-6')">
+  <div class="modal">
+    <button class="modal-close" onclick="closeModalBtn('modal-1')">✕</button>
+    <div style="font-size:2.5rem;margin-bottom:1rem"></div>
+    <h3>Conception et fabrication d'un moyeu de vélo</h3>
+    <div class="modal-subtitle">BUT Génie Mécanique & Productique · Projet académique</div>
+    <p>Dans le cadre d’un projet de conception mécanique, j’ai participé au développement complet d’un moyeu arrière de vélo cargo intégrant un système de roue libre. À partir d’un cahier des charges, le projet consistait à dimensionner, concevoir, fabriquer et contrôler l’ensemble du système mécanique.</p>
+    <ul>
+      <li>Dimensionnement du moyeu, choix des roulements et conception du système de roue libre avec calcul des cliquets.</li>
+      <li>Modélisation complète de l’ensemble sous CATIA, incluant la conception détaillée des différentes pièces mécaniques.</li>
+      <li>Préparation de la fabrication avec CFAO et définition des gammes d’usinage, puis usinage des composants.</li>
+      <li>Contrôle dimensionnel et vérification de la conformité des pièces en métrologie.</li>
+    </ul>
+  </div>
+</div>
 <script>
   // CURSOR
   const cursor = document.getElementById('cursor');
